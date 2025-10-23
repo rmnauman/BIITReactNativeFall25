@@ -4,7 +4,7 @@ import { RadioButton } from "react-native-paper";
 import { fileMapCacheDirectory } from "../../metro.config";
 
 const QuizSystem = () => {
-    const [ques, setQues] = useState(
+    const [ques, setQues] = useState([
         {
             q: "What is Capital of Pakistan:",
             o1: "Lahore",
@@ -12,7 +12,14 @@ const QuizSystem = () => {
             o3: "Rawalpindi",
             o4: "Karachi",
             sol: "op2",
-        }
+        }, {
+            q: "National Animal Of Pakistan",
+            o1: "Markhor",
+            o2: "Donkey",
+            o3: "Leopard",
+            o4: "Monkey",
+            sol: "op1",
+        }]
     )
     const [op, setOp] = useState('op1');
     const [score, setScore] = useState(0)
@@ -22,6 +29,8 @@ const QuizSystem = () => {
 
             setScore(score + 10)
         }
+        else
+            setScore(score - 10)
     }
     return (
         <View>
@@ -40,7 +49,7 @@ const QuizSystem = () => {
                         status={op == "op1" ? 'checked' : 'unchecked'}
                         onPress={() => { setOp('op1') }}
                     />
-                    <Text style={ss.txt}> {ques.o1}</Text>
+                    <Text style={ss.txt}> {ques[0].o1}</Text>
                 </View>
                 <View style={{ flexDirection: 'row' }}>
                     <RadioButton

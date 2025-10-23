@@ -1,28 +1,69 @@
 import React, { useState } from "react";
-import { Button, FlatList, Image, Text, View } from "react-native";
+import { Alert, Button, FlatList, Image, Text, TextInput, View } from "react-native";
 
 const Image_List = () => {
+
+    const [newCity, setNewCity] = useState();
     const [city, setCity] = useState([
         { id: 101, name: 'RWP', Province: 'Punjab', population: '8M' },
-        { id: 101, name: 'LHR', Province: 'Punjab', population: '15M' },
-        { id: 101, name: 'KHI', Province: 'Sindh', population: '30M' },
-        { id: 101, name: 'QTA', Province: 'Balochistan', population: '2M' },
-        { id: 101, name: 'PSW', Province: 'KPK', population: '4M' },
+        { id: 102, name: 'LHR', Province: 'Punjab', population: '15M' },
+        { id: 103, name: 'KHI', Province: 'Sindh', population: '30M' },
+        { id: 104, name: 'QTA', Province: 'Balochistan', population: '2M' },
+        { id: 105, name: 'PSW', Province: 'KPK', population: '4M' },
     ])
+
+    const deleteItem = (id) => {
+        const newData = city.filter(c => c.id != id);
+        setCity(newData)
+    }
+
+    const updateCity = (id) => {
+        const newArray = [...city]
+        newArray.forEach((c, ind) => {
+            if (c.id == id) {
+                newArray[ind].name = newCity
+            }
+        });
+        setCity([...newArray])
+        console.log(city)
+    }
 
     const showCities = ({ item }) => {
         return (
-            <View style={{ margin: 5, padding: 5, backgroundColor: 'yellow', }}>
-                <Text style={{ fontSize: 35, }}> {item.Province}</Text>
-                <Text style={{ fontSize: 20, }}> {item.name}</Text>
+            <View style={{
+                margin: 5, padding: 5, backgroundColor: 'orange',
+                flexDirection: 'row',
+            }}>
+                <View style={{ flex: 1, }}>
+                    <Text style={{ fontSize: 35, color: 'white', }}> {item.Province}</Text>
+                    <Text style={{ fontSize: 20, }}> {item.name}</Text>
+                </View>
+                <View style={{ flex: 1, gap: 10, }}>
+                    <Button title='View' onPress={() => {
+                        Alert.alert(item.id + '\t' + item.population)
+                    }} />
+                    <Button title='Delete' onPress={() => { deleteItem(item.id) }} />
+                    <Button title='Update' onPress={() => { updateCity(item.id) }}></Button>
+                </View>
 
             </View>
         );
     }
     return (
-        <View>
+        <View style={{ padding: 10, }}>
+            <TextInput
+                onChangeText={setNewCity}
+                placeholder="Enter City Name"
+                style={{
+                    borderWidth: 2, borderBlockColor: 'green', borderRadius: 10,
+                    fontSize: 30,
+                }}></TextInput>
             <FlatList
-                style={{ width: '80%', height: '60%', borderColor: 'black', borderWidth: 2, }}
+                style={{
+                    width: '80%', height: '60%', alignSelf: 'center',
+                    margin: 10, borderColor: 'black', borderWidth: 2,
+                    borderRadius: 10, padding: 5,
+                }}
                 data={city}
                 renderItem={showCities}
             />
